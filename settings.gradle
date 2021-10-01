@@ -3,8 +3,8 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
-    jcenter() // Warning: this repository is going to shut down soon
   }
 }
 rootProject.name = "GitHubRepositories"
+enableFeaturePreview("VERSION_CATALOGS")
 include ':app'
