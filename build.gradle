@@ -5,12 +5,18 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath "com.android.tools.build:gradle:7.0.2"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
+    classpath libs.gradle.plugin
+    classpath libs.kotlin.gradle.plugin
+    classpath libs.dagger.hilt.plugin
+    classpath libs.androidx.navigation.plugin
 
     // NOTE: Do not place your application dependencies here; they belong
     // in the individual module build.gradle files
   }
+}
+
+plugins {
+  id "com.github.ben-manes.versions" version "0.39.0"
 }
 
 task clean(type: Delete) {
