@@ -10,6 +10,7 @@ interface GitHubService {
   suspend fun getRepositories(
     @Query("q") language: String = "language:kotlin",
     @Query("page") page: Int,
+    @Query("perPage") perPage: Int,
     @Query("sort") sort: String = "stars"
   ): PageDTO
 
