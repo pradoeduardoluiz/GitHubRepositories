@@ -3,6 +3,7 @@ package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.Event
 
 data class RepositoriesState(
+  val isShimmering: Boolean = true,
   val isLoading: Boolean = false,
   val isLastPage: Boolean = false,
   val firstPage: Event<List<Item>>? = null,

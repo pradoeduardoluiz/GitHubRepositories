@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import br.com.prado.eduardo.luiz.githubrepositories.R
 import br.com.prado.eduardo.luiz.githubrepositories.databinding.RepositoriesFragmentBinding
+import br.com.prado.eduardo.luiz.githubrepositories.extensions.isShimmering
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.viewBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.watch
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.handleEvent
@@ -39,6 +40,7 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
 
   private fun bindOutputs() {
     watch(viewModel.state) { state ->
+      binding.shimmer.isShimmering = state.isShimmering
       state.nextPage.handleEvent { items ->
         adapter.submitList(items)
       }

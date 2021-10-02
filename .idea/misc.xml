@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/repositories_fragment.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/repository_item.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/repository_shimmer.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/search_fragment.xml" value="0.359375" />
       </map>
     </option>

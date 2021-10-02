@@ -48,7 +48,7 @@ class RepositoriesViewModel @Inject constructor(
 
   private suspend fun search(): Flow<List<RepositoryModel>> {
     return flow {
-      updateState { copy(isLoading = false) }
+      updateState { copy(isLoading = true) }
       handlePaging(
         reset = false,
         request = {
@@ -61,6 +61,7 @@ class RepositoriesViewModel @Inject constructor(
           )
         },
         onSuccess = { repositories ->
+          updateState { copy(isLoading = false, isShimmering = false) }
           emit(repositories)
         },
         onError = {
