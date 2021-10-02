@@ -13,4 +13,8 @@
   <dimen name="spacing_micro">4dp</dimen>
   <dimen name="spacing_tiny">1dp</dimen>
 
+  <dimen name="corner_radius_large">20dp</dimen>
+
+  <dimen name="image_size">100dp</dimen>
+
 </resources>
