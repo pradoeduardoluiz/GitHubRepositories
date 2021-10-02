@@ -1,47 +1,35 @@
 package br.com.prado.eduardo.luiz.githubrepositories.data.repositories
 
-import br.com.prado.eduardo.luiz.githubrepositories.domain.model.OwnerModel
-import br.com.prado.eduardo.luiz.githubrepositories.domain.model.PageModel
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import br.com.prado.eduardo.luiz.githubrepositories.data.paging.GithubPagingSource
+import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
-import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.dto.RepositoryDTO
-import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService
-import kotlin.math.ceil
+import kotlinx.coroutines.flow.Flow
 
 class GitHubRepositoryImpl(private val gitHubService: GitHubService) : GitHubRepository {
 
   override suspend fun getRepositories(
-    language: String,
-    page: Int,
-    perPage: Int
-  ): PageModel<RepositoryModel> {
-    val response = gitHubService.getRepositories(
-      language = language,
-      page = page,
-      perPage = perPage
-    )
-
-    val totalPages = ceil(response.totalCount.toDouble() / perPage).toInt()
-    return PageModel(
-      currentPage = page,
-      items = response.repositories.map(::mapToModel),
-      totalItems = response.totalCount,
-      totalPages = totalPages
-    )
+    language: String
+  ): Flow<PagingData<RepositoryModel>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = PAGE_SIZE,
+        enablePlaceholders = false,
+      ),
+      pagingSourceFactory = {
+        GithubPagingSource(
+          gitHubService = gitHubService,
+          language = language
+        )
+      }
+    ).flow
   }
 
-  private fun mapToModel(repository: RepositoryDTO) = RepositoryModel(
-    id = repository.id,
-    name = repository.name,
-    fullName = repository.fullName,
-    isPrivate = repository.isPrivate,
-    owner = OwnerModel(
-      name = repository.owner.name,
-      avatarUrl = repository.owner.avatarUrl
-    ),
-    description = repository.description,
-    url = repository.url,
-    forks = repository.forks
-  )
+  companion object {
+    const val PAGE_SIZE = 30
+  }
 
 }
