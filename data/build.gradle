@@ -22,9 +22,9 @@ dependencies {
   implementation libs.okhttp.logginginterceptor
   implementation libs.retrofit.library
 
-  implementation libs.moshi.library
-  implementation libs.moshi.adapter
-  implementation libs.retrofit.moshiconverter
+  api libs.moshi.library
+  api libs.moshi.adapter
+  api libs.retrofit.moshiconverter
 
   kapt libs.moshi.codegen
 

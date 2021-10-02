@@ -1,4 +1,4 @@
-package br.com.prado.eduardo.luiz.domain.model
+package br.com.prado.eduardo.luiz.githubrepositories.domain.model
 
 data class OwnerModel(
   val name: String,

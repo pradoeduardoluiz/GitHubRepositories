@@ -1,8 +1,8 @@
 package br.com.prado.eduardo.luiz.githubrepositories.domain.usecases
 
-import br.com.prado.eduardo.luiz.domain.model.PageModel
-import br.com.prado.eduardo.luiz.domain.model.RepositoryModel
-import br.com.prado.eduardo.luiz.domain.repository.GitHubRepository
+import br.com.prado.eduardo.luiz.githubrepositories.domain.model.PageModel
+import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
+import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
 import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.shared.UseCase
 
 class GetRepositoriesUseCase(
@@ -11,7 +11,7 @@ class GetRepositoriesUseCase(
 
   override suspend fun invoke(params: Params): PageModel<RepositoryModel> {
     return gitHubRepository.getRepositories(
-      language = params.language,
+      language = LANGUAGE_FILTER + params.language,
       page = params.page,
       perPage = params.perPage
     )
@@ -22,5 +22,9 @@ class GetRepositoriesUseCase(
     val page: Int,
     val perPage: Int
   )
+
+  private companion object {
+    const val LANGUAGE_FILTER = "language:"
+  }
 
 }

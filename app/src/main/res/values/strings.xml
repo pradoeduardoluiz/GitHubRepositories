@@ -1,3 +1,8 @@
 <resources>
   <string name="app_name">GitHubRepositories</string>
+
+  <string name="label_stars">stars: %s</string>
+  <string name="label_forks">forks: %s</string>
+  <string name="action_go_to_repository">View Repository</string>
+
 </resources>
