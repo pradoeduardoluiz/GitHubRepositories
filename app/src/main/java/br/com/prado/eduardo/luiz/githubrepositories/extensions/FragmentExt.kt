@@ -4,6 +4,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -30,3 +33,12 @@ fun <T> Fragment.viewBinding(bindingFactory: (View) -> T): ReadOnlyProperty<Frag
       }
     }
   }
+
+inline fun <reified T> Fragment.watch(source: StateFlow<T>, crossinline result: (T) -> Unit) {
+  source.onEach { if (it != null) result(it) }.observeInLifecycle(this)
+}
+
+inline fun <reified T> Fragment.watch(source: SharedFlow<T>, crossinline result: (T) -> Unit) {
+  source.onEach { if (it != null) result(it) }.observeInLifecycle(this)
+}
+

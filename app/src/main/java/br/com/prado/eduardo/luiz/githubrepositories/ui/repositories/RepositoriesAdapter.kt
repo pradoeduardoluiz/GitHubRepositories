@@ -10,7 +10,7 @@ import br.com.prado.eduardo.luiz.githubrepositories.databinding.RepositoryItemBi
 import coil.load
 
 class RepositoriesAdapter :
-  ListAdapter<RepositoriesState.Repository, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+  ListAdapter<RepositoriesState.Item, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val binding = RepositoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,7 +25,7 @@ class RepositoriesAdapter :
     private val binding: RepositoryItemBinding
   ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: RepositoriesState.Repository) {
+    fun bind(item: RepositoriesState.Item) {
       with(binding) {
         image.load(item.ownerImageUrl)
         name.text = item.name
@@ -37,15 +37,15 @@ class RepositoriesAdapter :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RepositoriesState.Repository>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RepositoriesState.Item>() {
       override fun areItemsTheSame(
-        oldItem: RepositoriesState.Repository,
-        newItem: RepositoriesState.Repository
+        oldItem: RepositoriesState.Item,
+        newItem: RepositoriesState.Item
       ): Boolean = oldItem.id == newItem.id
 
       override fun areContentsTheSame(
-        oldItem: RepositoriesState.Repository,
-        newItem: RepositoriesState.Repository
+        oldItem: RepositoriesState.Item,
+        newItem: RepositoriesState.Item
       ): Boolean = oldItem == newItem
     }
   }

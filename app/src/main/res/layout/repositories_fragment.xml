@@ -6,10 +6,18 @@
   android:layout_height="match_parent"
   tools:context=".ui.repositories.RepositoriesFragment">
 
-  <androidx.appcompat.widget.SearchView
+  <com.google.android.material.textfield.TextInputEditText
     android:id="@+id/search"
     android:layout_width="@dimen/none"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_small"
+    android:layout_marginEnd="@dimen/spacing_large"
+    android:drawableEnd="@drawable/ic_search"
+    android:imeOptions="actionSearch"
+    android:inputType="text"
+    android:paddingStart="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_normal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
@@ -18,6 +26,7 @@
     android:id="@+id/repositories"
     android:layout_width="@dimen/none"
     android:layout_height="@dimen/none"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

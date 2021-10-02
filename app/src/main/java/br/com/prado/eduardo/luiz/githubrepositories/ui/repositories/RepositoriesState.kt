@@ -1,10 +1,13 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
+import br.com.prado.eduardo.luiz.githubrepositories.mvi.Event
+
 data class RepositoriesState(
   val isLoading: Boolean = false,
   val isLastPage: Boolean = false,
+  val nextPage: Event<List<Item>>? = null,
 ) {
-  data class Repository(
+  data class Item(
     val id: Long,
     val name: String,
     val fullName: String,
