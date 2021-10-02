@@ -2,6 +2,8 @@
 <resources>
 
   <!-- Spacing constants (for margins and paddings) -->
+  <dimen name="none">0dp</dimen>
+
   <dimen name="spacing_huge">24dp</dimen>
   <dimen name="spacing_large">20dp</dimen>
   <dimen name="spacing_middle">16dp</dimen>
