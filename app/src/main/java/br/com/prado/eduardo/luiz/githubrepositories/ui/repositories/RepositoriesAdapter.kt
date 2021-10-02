@@ -31,7 +31,7 @@ class RepositoriesAdapter :
         image.load(item.ownerImageUrl)
         name.text = item.name
         author.text = item.ownerName
-        stars.text = root.context.getString(R.string.label_stars, item.forks.toString())
+        stars.text = root.context.getString(R.string.label_stars, item.stars.toString())
         forks.text = root.context.getString(R.string.label_forks, item.forks.toString())
       }
     }

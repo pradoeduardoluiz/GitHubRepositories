@@ -13,4 +13,5 @@ data class RepositoryDTO(
   @Json(name = "description") val description: String?,
   @Json(name = "url") val url: String,
   @Json(name = "forks") val forks: Long,
+  @Json(name = "stargazers_count") val stars: Long,
 )

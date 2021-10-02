@@ -54,7 +54,8 @@ class GithubPagingSource(
     ),
     description = repository.description,
     url = repository.url,
-    forks = repository.forks
+    forks = repository.forks,
+    stars = repository.stars
   )
 
   private companion object {

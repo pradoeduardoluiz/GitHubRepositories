@@ -16,5 +16,6 @@ data class RepositoriesState(
     val description: String?,
     val url: String,
     val forks: Long,
+    val stars: Long,
   )
 }

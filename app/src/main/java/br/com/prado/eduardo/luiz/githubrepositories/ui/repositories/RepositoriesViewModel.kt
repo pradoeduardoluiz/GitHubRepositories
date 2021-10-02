@@ -56,7 +56,8 @@ class RepositoriesViewModel @Inject constructor(
       ownerImageUrl = repository.owner.avatarUrl,
       description = repository.description,
       url = repository.url,
-      forks = repository.forks
+      forks = repository.forks,
+      stars = repository.stars
     )
   }
 
