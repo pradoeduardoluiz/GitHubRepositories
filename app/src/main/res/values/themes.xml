@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!-- Base application theme. -->
-  <style name="Theme.GitHubRepositories" parent="Theme.MaterialComponents.Light.Bridge">
+  <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
     <!-- Primary brand color. -->
     <item name="colorPrimary">@color/primaryColor</item>
     <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
@@ -13,4 +13,9 @@
     <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     <!-- Customize your theme here. -->
   </style>
+
+  <style name="AppTheme.Splash" parent="AppTheme">
+    <item name="android:windowBackground">@drawable/background_splash</item>
+  </style>
+
 </resources>
