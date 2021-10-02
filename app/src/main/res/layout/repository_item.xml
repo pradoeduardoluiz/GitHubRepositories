@@ -28,7 +28,7 @@
 
     <TextView
       android:id="@id/name"
-      style="@style/TextAppearance.MaterialComponents.Headline5"
+      style="@style/TextAppearance.MaterialComponents.Body1"
       android:layout_width="@dimen/none"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spacing_middle"
@@ -41,7 +41,7 @@
 
     <TextView
       android:id="@id/author"
-      style="@style/TextAppearance.MaterialComponents.Body1"
+      style="@style/TextAppearance.MaterialComponents.Body2"
       android:layout_width="@dimen/none"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spacing_middle"
@@ -62,10 +62,9 @@
       android:layout_marginTop="@dimen/spacing_compact"
       android:layout_marginBottom="@dimen/spacing_large"
       android:drawablePadding="@dimen/spacing_compact"
-      android:drawableTint="@color/black"
       android:textColor="@color/black"
       app:drawableStartCompat="@drawable/ic_star_outline"
-      app:layout_constraintBottom_toTopOf="@+id/goToRepository"
+      app:drawableTint="@color/black"
       app:layout_constraintStart_toEndOf="@id/image"
       app:layout_constraintTop_toBottomOf="@+id/author"
       tools:text="stars: 1234" />
@@ -75,15 +74,15 @@
       style="@style/TextAppearance.MaterialComponents.Body2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing_middle"
       android:layout_marginTop="@dimen/spacing_compact"
-      android:layout_marginEnd="@dimen/spacing_middle"
       android:layout_marginBottom="@dimen/spacing_large"
       android:drawablePadding="@dimen/spacing_compact"
       android:textColor="@color/black"
       app:drawableStartCompat="@drawable/ic_fork"
       app:layout_constraintBottom_toTopOf="@+id/goToRepository"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/author"
+      app:layout_constraintStart_toEndOf="@id/image"
+      app:layout_constraintTop_toBottomOf="@+id/stars"
       tools:text="forks: 1234" />
 
     <com.google.android.material.button.MaterialButton
