@@ -4,11 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_arrow_back_24.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_fork.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_star_outline.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/repositories_fragment.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/repository_item.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/search_fragment.xml" value="0.359375" />
       </map>
     </option>
   </component>

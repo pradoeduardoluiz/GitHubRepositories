@@ -8,6 +8,7 @@ import br.com.prado.eduardo.luiz.githubrepositories.mvi.PagingHandler
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.PagingHandlerImpl
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.StateViewModelImpl
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.toEvent
+import br.com.prado.eduardo.luiz.githubrepositories.navigation.Navigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class RepositoriesViewModel @Inject constructor(
   private val getRepositoriesUseCase: GetRepositoriesUseCase,
   private val dispatchersProvider: DispatchersProvider,
+  private val navigator: Navigator,
   @RepositoriesStateQualifier initialState: RepositoriesState
 ) : StateViewModelImpl<RepositoriesState, RepositoriesIntention>(
   dispatchersProvider = dispatchersProvider,
@@ -39,7 +41,8 @@ class RepositoriesViewModel @Inject constructor(
 
   override suspend fun handleIntentions(intention: RepositoriesIntention) {
     when (intention) {
-      is RepositoriesIntention.SearchRepositories -> setSearchQuery(intention.language)
+      is RepositoriesIntention.Search -> setSearchQuery(intention.language)
+      is RepositoriesIntention.Pop -> navigator.pop()
     }
   }
 

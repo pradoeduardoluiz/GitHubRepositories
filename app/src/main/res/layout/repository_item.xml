@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_margin="@dimen/spacing_middle"
-  android:backgroundTint="@color/white"
+  android:backgroundTint="@color/secondaryColor"
   android:elevation="@dimen/spacing_middle"
   app:cardCornerRadius="@dimen/corner_radius_large">
 
@@ -28,12 +28,11 @@
 
     <TextView
       android:id="@id/name"
-      style="@style/TextAppearance.MaterialComponents.Body1"
+      style="@style/GitHubRepositories.Text.Body1"
       android:layout_width="@dimen/none"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spacing_middle"
       android:layout_marginEnd="@dimen/spacing_middle"
-      android:textColor="@color/black"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/image"
       app:layout_constraintTop_toTopOf="@id/image"
@@ -41,13 +40,12 @@
 
     <TextView
       android:id="@id/author"
-      style="@style/TextAppearance.MaterialComponents.Body2"
+      style="@style/GitHubRepositories.Text.Body2"
       android:layout_width="@dimen/none"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spacing_middle"
       android:layout_marginTop="@dimen/spacing_compact"
       android:layout_marginEnd="@dimen/spacing_middle"
-      android:textColor="@color/black"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/image"
       app:layout_constraintTop_toBottomOf="@+id/name"
@@ -55,31 +53,31 @@
 
     <TextView
       android:id="@+id/stars"
-      style="@style/TextAppearance.MaterialComponents.Body2"
+      style="@style/GitHubRepositories.Text.Body2"
       android:layout_width="@dimen/none"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spacing_middle"
       android:layout_marginTop="@dimen/spacing_compact"
       android:layout_marginBottom="@dimen/spacing_large"
       android:drawablePadding="@dimen/spacing_compact"
-      android:textColor="@color/black"
+      android:gravity="center"
       app:drawableStartCompat="@drawable/ic_star_outline"
-      app:drawableTint="@color/black"
+      app:drawableTint="@color/primaryColor"
       app:layout_constraintStart_toEndOf="@id/image"
       app:layout_constraintTop_toBottomOf="@+id/author"
       tools:text="stars: 1234" />
 
     <TextView
       android:id="@+id/forks"
-      style="@style/TextAppearance.MaterialComponents.Body2"
+      style="@style/GitHubRepositories.Text.Body2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spacing_middle"
       android:layout_marginTop="@dimen/spacing_compact"
       android:layout_marginBottom="@dimen/spacing_large"
       android:drawablePadding="@dimen/spacing_compact"
-      android:textColor="@color/black"
       app:drawableStartCompat="@drawable/ic_fork"
+      app:drawableTint="@color/primaryColor"
       app:layout_constraintBottom_toTopOf="@+id/goToRepository"
       app:layout_constraintStart_toEndOf="@id/image"
       app:layout_constraintTop_toBottomOf="@+id/stars"
@@ -92,7 +90,9 @@
       android:layout_marginStart="@dimen/spacing_middle"
       android:layout_marginEnd="@dimen/spacing_middle"
       android:layout_marginBottom="@dimen/spacing_middle"
+      android:backgroundTint="@color/primaryColor"
       android:text="@string/action_go_to_repository"
+      android:textColor="@color/white"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent" />
