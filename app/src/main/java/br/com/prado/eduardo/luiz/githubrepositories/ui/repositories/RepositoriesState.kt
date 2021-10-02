@@ -3,7 +3,7 @@ package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 import androidx.paging.PagingData
 
 data class RepositoriesState(
-  val isShimmering: Boolean = true,
+  val isLoading: Boolean = true,
   val pagingData: PagingData<Item> = PagingData.empty(),
 ) {
   data class Item(

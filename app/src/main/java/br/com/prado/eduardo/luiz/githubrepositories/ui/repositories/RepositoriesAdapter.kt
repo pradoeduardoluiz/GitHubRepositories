@@ -2,15 +2,15 @@ package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.prado.eduardo.luiz.githubrepositories.R
 import br.com.prado.eduardo.luiz.githubrepositories.databinding.RepositoryItemBinding
 import coil.load
 
 class RepositoriesAdapter :
-  ListAdapter<RepositoriesState.Item, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<RepositoriesState.Item, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val binding = RepositoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -18,7 +18,8 @@ class RepositoriesAdapter :
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    if (holder is RepositoryViewHolder) holder.bind(getItem(position))
+    val item = getItem(position) ?: return
+    if (holder is RepositoryViewHolder) holder.bind(item)
   }
 
   private inner class RepositoryViewHolder(
