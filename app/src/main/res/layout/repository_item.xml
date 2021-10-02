@@ -52,6 +52,7 @@
       tools:text="@tools:sample/full_names" />
 
     <TextView
+      android:id="@+id/stars"
       style="@style/TextAppearance.MaterialComponents.Body2"
       android:layout_width="@dimen/none"
       android:layout_height="wrap_content"
@@ -66,6 +67,7 @@
       tools:text="stars: 1234" />
 
     <TextView
+      android:id="@+id/forks"
       style="@style/TextAppearance.MaterialComponents.Body2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

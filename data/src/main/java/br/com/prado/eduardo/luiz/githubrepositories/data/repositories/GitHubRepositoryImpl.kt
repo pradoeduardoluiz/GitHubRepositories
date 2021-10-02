@@ -1,8 +1,8 @@
 package br.com.prado.eduardo.luiz.githubrepositories.data.repositories
 
-import br.com.prado.eduardo.luiz.domain.model.OwnerModel
-import br.com.prado.eduardo.luiz.domain.model.PageModel
-import br.com.prado.eduardo.luiz.domain.model.RepositoryModel
+import br.com.prado.eduardo.luiz.githubrepositories.domain.model.OwnerModel
+import br.com.prado.eduardo.luiz.githubrepositories.domain.model.PageModel
+import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.dto.RepositoryDTO
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService

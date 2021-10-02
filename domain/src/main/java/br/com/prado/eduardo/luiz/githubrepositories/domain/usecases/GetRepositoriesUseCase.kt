@@ -1,7 +1,7 @@
 package br.com.prado.eduardo.luiz.githubrepositories.domain.usecases
 
-import br.com.prado.eduardo.luiz.domain.model.PageModel
-import br.com.prado.eduardo.luiz.domain.model.RepositoryModel
+import br.com.prado.eduardo.luiz.githubrepositories.domain.model.PageModel
+import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
 import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.shared.UseCase
 
