@@ -1,30 +1,25 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import br.com.prado.eduardo.luiz.githubrepositories.dispachers.DispatchersProvider
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.GetRepositoriesUseCase
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.PagingHandler
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.PagingHandlerImpl
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.StateViewModelImpl
-import br.com.prado.eduardo.luiz.githubrepositories.mvi.toEvent
 import br.com.prado.eduardo.luiz.githubrepositories.navigation.Navigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class RepositoriesViewModel @Inject constructor(
   private val getRepositoriesUseCase: GetRepositoriesUseCase,
-  private val dispatchersProvider: DispatchersProvider,
+  dispatchersProvider: DispatchersProvider,
   private val navigator: Navigator,
   @RepositoriesStateQualifier initialState: RepositoriesState
 ) : StateViewModelImpl<RepositoriesState, RepositoriesIntention>(
@@ -33,90 +28,22 @@ class RepositoriesViewModel @Inject constructor(
 ), RepositoriesContract.ViewModel,
   PagingHandler<RepositoryModel> by PagingHandlerImpl() {
 
-  private var searchQuery = MutableStateFlow("")
-
-  init {
-    watchForSearchQueryChanges()
-  }
-
   override suspend fun handleIntentions(intention: RepositoriesIntention) {
     when (intention) {
-      is RepositoriesIntention.Search -> setSearchQuery(intention.language)
+      is RepositoriesIntention.Search -> search(intention.language)
       is RepositoriesIntention.Pop -> navigator.pop()
     }
   }
 
-  private suspend fun search(): Flow<List<RepositoryModel>> {
-    return flow {
-      updateState { copy(isLoading = true) }
-      handlePaging(
-        reset = false,
-        request = {
-          getRepositoriesUseCase(
-            GetRepositoriesUseCase.Params(
-              language = searchQuery.value,
-              page = getCurrentPage(),
-              perPage = getPageSize()
-            )
-          )
-        },
-        onSuccess = { repositories ->
-          updateState { copy(isLoading = false, isShimmering = false) }
-          emit(repositories)
-        },
-        onError = {
-          updateState {
-            copy(
-              isLoading = false,
-            )
-          }
+  private suspend fun search(language: String): Flow<PagingData<RepositoryModel>> =
+    getRepositoriesUseCase(GetRepositoriesUseCase.Params(language))
+      .cachedIn(viewModelScope)
+      .onEach { pagingDataModel ->
+        val pagingData = pagingDataModel.map { model ->
+          mapToState(model)
         }
-      )
-    }
-  }
-
-  private fun watchForSearchQueryChanges() {
-    viewModelScope.launch(dispatchersProvider.io) {
-      searchQuery
-        .debounce(TIMEOUT_MILLIS)
-        .filter { query ->
-          if (query.isEmpty()) {
-            updateState {
-              copy(firstPage = emptyList<RepositoriesState.Item>().toEvent())
-            }
-            return@filter false
-          } else {
-            return@filter true
-          }
-        }
-        .flatMapLatest { search() }
-        .flowOn(dispatchersProvider.io)
-        .collect { repositories ->
-          val items = repositories.map(::mapToState)
-
-          val firstPageEvent = if (isFirstPage()) items.toEvent() else null
-          val nextPageEvent = if (!isFirstPage()) items.toEvent() else null
-
-          updateState {
-            copy(
-              isLoading = false,
-              firstPage = firstPageEvent,
-              nextPage = nextPageEvent,
-            )
-          }
-        }
-    }
-  }
-
-  private suspend fun setSearchQuery(query: String) {
-    resetPage()
-    if (query.isEmpty()) {
-      updateState {
-        copy(firstPage = emptyList<RepositoriesState.Item>().toEvent())
+        updateState { copy(pagingData = pagingData) }
       }
-    }
-    searchQuery.value = query
-  }
 
   private fun mapToState(repository: RepositoryModel): RepositoriesState.Item {
     return RepositoriesState.Item(
@@ -130,10 +57,6 @@ class RepositoriesViewModel @Inject constructor(
       url = repository.url,
       forks = repository.forks
     )
-  }
-
-  companion object {
-    const val TIMEOUT_MILLIS = 300L
   }
 
 }

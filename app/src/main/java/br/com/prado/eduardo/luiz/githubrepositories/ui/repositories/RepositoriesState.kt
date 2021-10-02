@@ -1,13 +1,10 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
-import br.com.prado.eduardo.luiz.githubrepositories.mvi.Event
+import androidx.paging.PagingData
 
 data class RepositoriesState(
   val isShimmering: Boolean = true,
-  val isLoading: Boolean = false,
-  val isLastPage: Boolean = false,
-  val firstPage: Event<List<Item>>? = null,
-  val nextPage: Event<List<Item>>? = null,
+  val pagingData: PagingData<Item> = PagingData.empty(),
 ) {
   data class Item(
     val id: Long,
