@@ -2,7 +2,6 @@ package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -56,7 +55,6 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
 
   private fun handleAfterTextChange(language: String) = with(binding) {
     search.addEndDrawable(if (language.isEmpty()) R.drawable.ic_search else R.drawable.ic_close)
-    repositories.isVisible = language.isEmpty()
     viewModel.publish(RepositoriesIntention.SearchRepositories(language = language))
   }
 

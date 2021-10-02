@@ -1,6 +1,7 @@
 package br.com.prado.eduardo.luiz.githubrepositories.data.di
 
 import br.com.prado.eduardo.luiz.githubrepositories.data.repositories.GitHubRepositoryImpl
+import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.interceptor.AuthorizationInterceptor
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService
 import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
 import com.squareup.moshi.Moshi
@@ -32,8 +33,11 @@ object DataModule {
 
   @Provides
   @Singleton
-  fun provideBaseRetrofit(moshi: Moshi): Retrofit {
-    val okHttpClient = provideOkHttpClient()
+  fun provideBaseRetrofit(
+    moshi: Moshi,
+    authorizationInterceptor: AuthorizationInterceptor
+  ): Retrofit {
+    val okHttpClient = provideOkHttpClient(authorizationInterceptor)
 
     return Retrofit.Builder()
       .baseUrl(BASE_URL)
@@ -62,6 +66,10 @@ object DataModule {
   @Singleton
   fun provideGitHbService(retrofit: Retrofit): GitHubService =
     retrofit.create(GitHubService::class.java)
+
+  @Provides
+  @Singleton
+  fun provideAuthorizationInterceptor(): AuthorizationInterceptor = AuthorizationInterceptor()
 
   @Provides
   @Singleton

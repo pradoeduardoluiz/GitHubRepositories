@@ -5,6 +5,7 @@ import br.com.prado.eduardo.luiz.githubrepositories.mvi.Event
 data class RepositoriesState(
   val isLoading: Boolean = false,
   val isLastPage: Boolean = false,
+  val firstPage: Event<List<Item>>? = null,
   val nextPage: Event<List<Item>>? = null,
 ) {
   data class Item(

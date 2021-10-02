@@ -8,6 +8,7 @@ interface PagingHandler<ResultType> {
   fun isFirstPage(): Boolean
   fun isLastPage(): Boolean
   fun getTotalItems(): Int
+  fun resetPage()
 
   suspend fun handlePaging(
     request: suspend () -> PageModel<ResultType>,
@@ -63,7 +64,7 @@ class PagingHandlerImpl<ResultType>(
     }
   }
 
-  private fun resetPage() {
+  override fun resetPage() {
     currentPage = defaultFirstPage
     lastPage = DEFAULT_LAST_PAGE
     allItems = mutableListOf()
