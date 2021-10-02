@@ -1,4 +1,4 @@
-package br.com.prado.eduardo.luiz.githubrepositories
+package br.com.prado.eduardo.luiz.githubrepositories.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
