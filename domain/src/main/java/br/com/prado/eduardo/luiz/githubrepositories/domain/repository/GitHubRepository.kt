@@ -1,4 +1,4 @@
-package br.com.prado.eduardo.luiz.domain.repository
+package br.com.prado.eduardo.luiz.githubrepositories.domain.repository
 
 import br.com.prado.eduardo.luiz.domain.model.PageModel
 import br.com.prado.eduardo.luiz.domain.model.RepositoryModel
