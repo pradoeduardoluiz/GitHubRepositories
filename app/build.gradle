@@ -41,6 +41,7 @@ dependencies {
   implementation libs.androidx.lifecycle.livedata
   implementation libs.androidx.lifecycle.ext
   implementation libs.androidx.swiperefreshlayout
+  implementation libs.androidx.paging.library
 
   kapt libs.androidx.hilt.compiler
 
@@ -59,5 +60,6 @@ dependencies {
   testImplementation libs.junit.library
   testImplementation libs.mockk
   testImplementation libs.coroutines.test
+  testImplementation libs.androidx.paging.test
   androidTestImplementation libs.junit.ext
 }
