@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_margin="@dimen/spacing_middle"
+  android:background="@color/white"
+  android:orientation="vertical">
+
+  <include
+    android:id="@+id/error"
+    layout="@layout/repository_error_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/toolbar"
+    tools:visibility="visible" />
+
+  <com.facebook.shimmer.ShimmerFrameLayout
+    android:id="@+id/shimmer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <include layout="@layout/repository_shimmer_item" />
+
+  </com.facebook.shimmer.ShimmerFrameLayout>
+
+</LinearLayout>

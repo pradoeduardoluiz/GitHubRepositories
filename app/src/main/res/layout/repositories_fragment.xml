@@ -34,12 +34,36 @@
     tools:itemCount="10"
     tools:listitem="@layout/repository_item" />
 
+  <TextView
+    android:id="@+id/emptyList"
+    android:layout_width="@dimen/none"
+    android:layout_height="@dimen/none"
+    android:gravity="center"
+    android:text="@string/label_no_result"
+    android:textSize="@dimen/font_large"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+  <include
+    android:id="@+id/error"
+    layout="@layout/repository_error_item"
+    android:layout_width="@dimen/none"
+    android:layout_height="@dimen/none"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
   <com.facebook.shimmer.ShimmerFrameLayout
     android:id="@+id/shimmer"
     android:layout_width="@dimen/none"
     android:layout_height="@dimen/none"
     android:animateLayoutChanges="true"
-    android:visibility="visible"
+    android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

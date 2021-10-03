@@ -9,7 +9,7 @@ import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.GetRepositor
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.StateViewModelImpl
 import br.com.prado.eduardo.luiz.githubrepositories.navigation.Navigator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +33,7 @@ class RepositoriesViewModel @Inject constructor(
   private suspend fun search(language: String) {
     getRepositoriesUseCase(GetRepositoriesUseCase.Params(language))
       .cachedIn(viewModelScope)
-      .collect { pagingDataModel ->
+      .collectLatest { pagingDataModel ->
         val pagingData = pagingDataModel.map { repository ->
           mapToState(repository)
         }
