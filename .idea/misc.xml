@@ -9,7 +9,9 @@
         <entry key="app/src/main/res/drawable/ic_star_outline.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/repositories_fragment.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/repository_error_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/repository_item.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/repository_load_state_footer_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/repository_shimmer.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/search_fragment.xml" value="0.359375" />
       </map>
