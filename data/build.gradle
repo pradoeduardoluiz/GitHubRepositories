@@ -21,6 +21,8 @@ dependencies {
   implementation libs.coroutines.library
   implementation libs.okhttp.logginginterceptor
   implementation libs.retrofit.library
+  implementation libs.androidx.paging.library
+  testImplementation libs.androidx.paging.test
 
   api libs.moshi.library
   api libs.moshi.adapter

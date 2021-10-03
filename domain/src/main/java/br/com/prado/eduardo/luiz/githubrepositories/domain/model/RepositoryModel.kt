@@ -9,4 +9,5 @@ data class RepositoryModel(
   val description: String?,
   val url: String,
   val forks: Long,
+  val stars: Long,
 )

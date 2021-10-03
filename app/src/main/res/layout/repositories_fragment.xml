@@ -4,23 +4,23 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@color/white"
   tools:context=".ui.repositories.RepositoriesFragment">
 
-  <com.google.android.material.textfield.TextInputEditText
-    android:id="@+id/search"
+  <androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
     android:layout_width="@dimen/none"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spacing_middle"
-    android:layout_marginTop="@dimen/spacing_small"
-    android:layout_marginEnd="@dimen/spacing_large"
-    android:drawableEnd="@drawable/ic_search"
-    android:imeOptions="actionSearch"
-    android:inputType="text"
-    android:paddingStart="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_normal"
+    android:layout_height="?actionBarSize"
+    android:background="@color/black"
+    android:elevation="@dimen/elevation_normal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="parent"
+    app:navigationIcon="@drawable/ic_arrow_back"
+    app:title="@string/title_repositories"
+    app:titleTextAppearance="@style/GitHubRepositories.Toolbar.Title"
+    app:titleTextColor="@color/white"
+    tools:visibility="visible" />
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/repositories"
@@ -30,8 +30,24 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/search"
+    app:layout_constraintTop_toBottomOf="@id/toolbar"
     tools:itemCount="10"
     tools:listitem="@layout/repository_item" />
+
+  <com.facebook.shimmer.ShimmerFrameLayout
+    android:id="@+id/shimmer"
+    android:layout_width="@dimen/none"
+    android:layout_height="@dimen/none"
+    android:animateLayoutChanges="true"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/toolbar"
+    tools:visibility="gone">
+
+    <include layout="@layout/repository_shimmer" />
+
+  </com.facebook.shimmer.ShimmerFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
