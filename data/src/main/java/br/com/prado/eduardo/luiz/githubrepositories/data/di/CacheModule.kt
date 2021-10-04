@@ -3,6 +3,7 @@ package br.com.prado.eduardo.luiz.githubrepositories.data.di
 import android.content.Context
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.Database
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.DatabaseHelper
+import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.dao.RemoteKeysDAO
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.dao.RepositoryDAO
 import dagger.Module
 import dagger.Provides
@@ -23,8 +24,14 @@ object CacheModule {
 
   @Provides
   @Singleton
-  fun provideAccountDAO(database: Database): RepositoryDAO {
+  fun provideRepositoryDAO(database: Database): RepositoryDAO {
     return database.repositoryDao()
+  }
+
+  @Provides
+  @Singleton
+  fun provideRemoteKeysDAO(database: Database): RemoteKeysDAO {
+    return database.remoteKeysDao()
   }
 
 }

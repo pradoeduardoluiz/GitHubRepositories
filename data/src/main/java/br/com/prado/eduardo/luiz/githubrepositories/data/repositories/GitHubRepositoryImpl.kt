@@ -13,8 +13,7 @@ import br.com.prado.eduardo.luiz.githubrepositories.domain.model.OwnerModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalPagingApi::class)
 class GitHubRepositoryImpl(
@@ -25,17 +24,6 @@ class GitHubRepositoryImpl(
   override suspend fun getRepositories(
     language: String
   ): Flow<PagingData<RepositoryModel>> {
-    return channelFlow {
-      getDatabaseRepositories(language).collect { pagingData ->
-        val modelPagingData = pagingData.map(::mapToModel)
-        send(modelPagingData)
-      }
-    }
-  }
-
-  private fun getDatabaseRepositories(
-    language: String
-  ): Flow<PagingData<RepositoryDBO>> {
     return Pager(
       config = PagingConfig(
         pageSize = PAGE_SIZE,
@@ -47,7 +35,9 @@ class GitHubRepositoryImpl(
         database
       ),
       pagingSourceFactory = { database.repositoryDao().getRepositories(language) }
-    ).flow
+    ).flow.map { pagingData ->
+      pagingData.map(::mapToModel)
+    }
   }
 
   private fun mapToModel(repository: RepositoryDBO) = RepositoryModel(

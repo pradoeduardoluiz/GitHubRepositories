@@ -8,8 +8,8 @@ import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.dbo.Remote
 abstract class RemoteKeysDAO : BaseDAO<RemoteKeysDBO>() {
 
   @Query("SELECT * FROM remote_keys WHERE repoId = :repoId")
-  abstract fun getById(repoId: Long): RemoteKeysDBO?
+  abstract suspend fun getById(repoId: Long): RemoteKeysDBO?
 
   @Query("DELETE FROM remote_keys")
-  abstract fun deleteAll()
+  abstract suspend fun deleteAll()
 }
