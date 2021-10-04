@@ -40,34 +40,22 @@ class GithubRemoteMediator(
       }
       LoadType.PREPEND -> {
         val remoteKeys = getRemoteKeyForFirstItem(state)
-        // If remoteKeys is null, that means the refresh result is not in the database yet.
-        // We can return Success with `endOfPaginationReached = false` because Paging
-        // will call this method again if RemoteKeys becomes non-null.
-        // If remoteKeys is NOT NULL but its prevKey is null, that means we've reached
-        // the end of pagination for prepend.
         val prevKey = remoteKeys?.prevKey
-        if (prevKey == null) {
-          return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-        }
+          ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
         prevKey
       }
       LoadType.APPEND -> {
         val remoteKeys = getRemoteKeyForLastItem(state)
-        // If remoteKeys is null, that means the refresh result is not in the database yet.
-        // We can return Success with `endOfPaginationReached = false` because Paging
-        // will call this method again if RemoteKeys becomes non-null.
-        // If remoteKeys is NOT NULL but its prevKey is null, that means we've reached
-        // the end of pagination for append.
         val nextKey = remoteKeys?.nextKey
-        if (nextKey == null) {
-          return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-        }
+          ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
         nextKey
       }
     }
 
+    val query = LANGUAGE_FILTER + language
+
     try {
-      val apiResponse = gitHubService.getRepositories(language, page, state.config.pageSize)
+      val apiResponse = gitHubService.getRepositories(query, page, state.config.pageSize)
 
       val repos = apiResponse.repositories.map(::mapToDbo)
       val endOfPaginationReached = repos.isEmpty()
@@ -95,21 +83,15 @@ class GithubRemoteMediator(
   }
 
   private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, RepositoryDBO>): RemoteKeysDBO? {
-    // Get the last page that was retrieved, that contained items.
-    // From that last page, get the last item
     return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
       ?.let { repo ->
-        // Get the remote keys of the last item retrieved
         database.remoteKeysDao().getById(repo.id)
       }
   }
 
   private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, RepositoryDBO>): RemoteKeysDBO? {
-    // Get the first page that was retrieved, that contained items.
-    // From that first page, get the first item
     return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
       ?.let { repo ->
-        // Get the remote keys of the first items retrieved
         database.remoteKeysDao().getById(repo.id)
       }
   }
@@ -117,8 +99,6 @@ class GithubRemoteMediator(
   private suspend fun getRemoteKeyClosestToCurrentPosition(
     state: PagingState<Int, RepositoryDBO>
   ): RemoteKeysDBO? {
-    // The paging library is trying to load data after the anchor position
-    // Get the item closest to the anchor position
     return state.anchorPosition?.let { position ->
       state.closestItemToPosition(position)?.id?.let { repoId ->
         database.remoteKeysDao().getById(repoId)
@@ -142,6 +122,7 @@ class GithubRemoteMediator(
 
   private companion object {
     const val STARTING_PAGE_INDEX = 1
+    const val LANGUAGE_FILTER = "language:"
   }
 
 }
