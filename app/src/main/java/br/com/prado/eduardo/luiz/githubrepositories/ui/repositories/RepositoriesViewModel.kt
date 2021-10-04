@@ -1,6 +1,7 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import br.com.prado.eduardo.luiz.githubrepositories.dispachers.DispatchersProvider
@@ -9,7 +10,9 @@ import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.GetRepositor
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.StateViewModelImpl
 import br.com.prado.eduardo.luiz.githubrepositories.navigation.Navigator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,10 +36,9 @@ class RepositoriesViewModel @Inject constructor(
   private suspend fun search(language: String) {
     getRepositoriesUseCase(GetRepositoriesUseCase.Params(language))
       .cachedIn(viewModelScope)
+      .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
       .collectLatest { pagingDataModel ->
-        val pagingData = pagingDataModel.map { repository ->
-          mapToState(repository)
-        }
+        val pagingData = pagingDataModel.map(::mapToState)
         updateState {
           copy(
             isLoading = false,

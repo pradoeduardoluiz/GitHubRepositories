@@ -9,15 +9,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.RecyclerView
 import br.com.prado.eduardo.luiz.githubrepositories.R
 import br.com.prado.eduardo.luiz.githubrepositories.databinding.RepositoriesFragmentBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.isShimmering
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.viewBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.watch
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -47,9 +45,7 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
 
   private fun bindOutputs() {
     watch(viewModel.state) { state ->
-      lifecycleScope.launch {
-        adapter.submitData(state.pagingData)
-      }
+      adapter.submitData(viewLifecycleOwner.lifecycle, state.pagingData)
     }
   }
 
@@ -59,20 +55,24 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
       footer = RepositoriesLoadStateAdapter { adapter.retry() }
     )
     adapter.addLoadStateListener { loadState ->
-//      emptyList.isVisible = loadState.isEmpty(adapter)
       repositories.isVisible = loadState.isNotLoading()
-      binding.shimmer.isShimmering = loadState.isLoading()
       binding.error.root.isVisible = loadState.isError()
+    }
+
+    lifecycleScope.launchWhenCreated {
+      adapter.loadStateFlow.collectLatest { loadStates ->
+        binding.shimmer.isShimmering = loadStates.isLoading()
+      }
     }
   }
 
-  private fun CombinedLoadStates.isLoading() = this.source.refresh is LoadState.Loading
+  private fun CombinedLoadStates.isLoading() =
+    this.source.refresh is LoadState.Loading
 
-  private fun CombinedLoadStates.isNotLoading() = this.source.refresh is LoadState.NotLoading
+  private fun CombinedLoadStates.isNotLoading() =
+    this.source.refresh is LoadState.NotLoading
 
-  private fun CombinedLoadStates.isError() = this.source.refresh is LoadState.Error
+  private fun CombinedLoadStates.isError() =
+    this.source.refresh is LoadState.Error
 
-  private fun <T : Any, VH : RecyclerView.ViewHolder> CombinedLoadStates.isEmpty(
-    adapter: PagingDataAdapter<T, VH>
-  ) = this.refresh is LoadState.NotLoading && adapter.itemCount == 0
 }

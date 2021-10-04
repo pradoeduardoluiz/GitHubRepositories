@@ -12,16 +12,12 @@ class GetRepositoriesUseCase(
 
   override suspend fun invoke(params: Params): Flow<PagingData<RepositoryModel>> {
     return gitHubRepository.getRepositories(
-      language = LANGUAGE_FILTER + params.language
+      language = params.language
     )
   }
 
   data class Params(
     val language: String
   )
-
-  private companion object {
-    const val LANGUAGE_FILTER = "language:"
-  }
 
 }
