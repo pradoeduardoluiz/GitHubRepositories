@@ -66,11 +66,11 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
     }
   }
 
-  private fun CombinedLoadStates.isLoading() = this.source.refresh is LoadState.Loading
+  private fun CombinedLoadStates.isLoading() = this.mediator?.refresh is LoadState.Loading
 
-  private fun CombinedLoadStates.isNotLoading() = this.source.refresh is LoadState.NotLoading
+  private fun CombinedLoadStates.isNotLoading() = this.mediator?.refresh is LoadState.NotLoading
 
-  private fun CombinedLoadStates.isError() = this.source.refresh is LoadState.Error
+  private fun CombinedLoadStates.isError() = this.mediator?.refresh is LoadState.Error
 
   private fun <T : Any, VH : RecyclerView.ViewHolder> CombinedLoadStates.isEmpty(
     adapter: PagingDataAdapter<T, VH>

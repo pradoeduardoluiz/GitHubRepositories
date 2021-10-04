@@ -4,6 +4,7 @@ object DatabaseConstants {
 
   object Table {
     const val REPOSITORY = "repository"
+    const val REMOTE_KEYS = "remote_keys"
   }
 
   const val VERSION = 1

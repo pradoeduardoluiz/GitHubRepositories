@@ -12,7 +12,7 @@ data class RepositoryDBO(
   val fullName: String,
   val isPrivate: Boolean,
   val ownerName: String,
-  val ownerImage: String,
+  val ownerAvatarUrl: String,
   val description: String?,
   val url: String,
   val forks: Long,
