@@ -36,6 +36,13 @@ dependencies {
   testImplementation libs.dagger.hilt.test
   kaptTest libs.dagger.hilt.compiler
 
+  testImplementation libs.androidx.coretesting
   testImplementation libs.junit.library
   testImplementation libs.mockk
+  testImplementation libs.mockito
+
+
+  androidTestImplementation libs.mockkandroid
+  androidTestImplementation libs.junit.ext
+  androidTestImplementation libs.mockitoandroid
 }

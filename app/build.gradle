@@ -65,5 +65,7 @@ dependencies {
   testImplementation libs.mockk
   testImplementation libs.coroutines.test
   testImplementation libs.androidx.paging.test
+  testImplementation libs.androidx.coretesting
+
   androidTestImplementation libs.junit.ext
 }
