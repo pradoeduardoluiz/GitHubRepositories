@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -15,7 +14,6 @@ import br.com.prado.eduardo.luiz.githubrepositories.extensions.isShimmering
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.viewBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.watch
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -57,12 +55,7 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
     adapter.addLoadStateListener { loadState ->
       repositories.isVisible = loadState.isNotLoading()
       binding.error.root.isVisible = loadState.isError()
-    }
-
-    lifecycleScope.launchWhenCreated {
-      adapter.loadStateFlow.collectLatest { loadStates ->
-        binding.shimmer.isShimmering = loadStates.isLoading()
-      }
+      binding.shimmer.isShimmering = loadState.isLoading()
     }
   }
 
@@ -70,7 +63,8 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
     this.source.refresh is LoadState.Loading
 
   private fun CombinedLoadStates.isNotLoading() =
-    this.source.refresh is LoadState.NotLoading
+    this.source.refresh is LoadState.NotLoading ||
+      this.mediator?.refresh is LoadState.NotLoading
 
   private fun CombinedLoadStates.isError() =
     this.source.refresh is LoadState.Error

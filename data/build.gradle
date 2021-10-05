@@ -33,6 +33,9 @@ dependencies {
   implementation libs.dagger.hilt.core
   kapt libs.dagger.hilt.compiler
 
+  testImplementation libs.dagger.hilt.test
+  kaptTest libs.dagger.hilt.compiler
+
   testImplementation libs.junit.library
   testImplementation libs.mockk
 }
