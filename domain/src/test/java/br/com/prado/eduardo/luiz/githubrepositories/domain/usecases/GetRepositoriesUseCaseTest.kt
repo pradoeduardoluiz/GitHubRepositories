@@ -1,13 +1,15 @@
 package br.com.prado.eduardo.luiz.githubrepositories.domain.usecases
 
+import androidx.paging.PagingData
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.OwnerModel
-import br.com.prado.eduardo.luiz.githubrepositories.domain.model.PageModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -21,46 +23,39 @@ class GetRepositoriesUseCaseTest {
   @Before
   fun `set up`() {
     getRepositoriesUseCase = GetRepositoriesUseCase(gitHubRepository)
+    Assert.assertNotNull(getRepositoriesUseCase)
   }
 
   @Test
   fun `should get repositories`() = runBlocking {
     val language = "kotlin"
-    val page = 1
-    val perPage = 1
 
-    val params = GetRepositoriesUseCase.Params(
-      language = language,
-      page = page,
-      perPage = perPage
-    )
+    val params = GetRepositoriesUseCase.Params(language = language)
 
-    val expected = PageModel(
-      currentPage = 1,
-      items = listOf(
-        RepositoryModel(
-          id = 1,
-          name = "name",
-          fullName = "fullName",
-          isPrivate = false,
-          owner = OwnerModel(
-            name = "name",
-            avatarUrl = "avatarUrl"
-          ),
-          description = "description",
-          url = "url",
-          forks = 10
-        )
+    val model = RepositoryModel(
+      id = 1,
+      name = "name",
+      fullName = "fullName",
+      isPrivate = false,
+      owner = OwnerModel(
+        name = "name",
+        avatarUrl = "avatarUrl"
       ),
-      totalItems = 1,
-      totalPages = 1
+      description = "description",
+      url = "url",
+      forks = 10,
+      stars = 1
     )
 
-    coEvery { gitHubRepository.getRepositories(language, page, perPage) } returns expected
-    val actual = getRepositoriesUseCase(params = params)
-    Assert.assertEquals(expected, actual)
+    val expected = PagingData.from(listOf(model))
+    val expectedFlow = flowOf(expected)
 
-    coVerify(exactly = 1) { gitHubRepository.getRepositories(language, page, perPage) }
+    coEvery { gitHubRepository.getRepositories(language) } returns expectedFlow
+    getRepositoriesUseCase(params = params).collect { actual ->
+      Assert.assertEquals(expected, actual)
+    }
+
+    coVerify(exactly = 1) { gitHubRepository.getRepositories(language) }
 
     confirmVerified(gitHubRepository)
   }

@@ -67,7 +67,6 @@ object RemoteModule {
 
   @Provides
   @Singleton
-  fun provideAuthorizationInterceptor(): AuthorizationInterceptor =
-    AuthorizationInterceptor()
+  fun provideAuthorizationInterceptor(): AuthorizationInterceptor = AuthorizationInterceptor()
 
 }

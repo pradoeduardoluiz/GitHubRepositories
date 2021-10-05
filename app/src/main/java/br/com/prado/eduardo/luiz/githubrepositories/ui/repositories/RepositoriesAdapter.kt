@@ -28,7 +28,9 @@ class RepositoriesAdapter :
 
     fun bind(item: RepositoriesState.Item) {
       with(binding) {
-        image.load(item.ownerImageUrl)
+        image.load(item.ownerImageUrl) {
+          error(R.drawable.ic_placeholder)
+        }
         name.text = item.name
         author.text = item.ownerName
         stars.text = root.context.getString(R.string.label_stars, item.stars.toString())
