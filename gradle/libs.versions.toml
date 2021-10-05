@@ -62,7 +62,11 @@ dagger-hilt-test = "com.google.dagger:hilt-android-testing:2.36"
 #
 coredesugaring = "com.android.tools:desugar_jdk_libs:1.0.9"
 #
+androidx-coretesting = "androidx.arch.core:core-testing:2.1.0"
 junit-library = "junit:junit:4.13.2"
 junit-ext = "androidx.test.ext:junit:1.1.2"
+mockito = "org.mockito:mockito-inline:2.13.0"
+mockitoandroid = "org.mockito:mockito-core:3.10.0"
 mockk = "io.mockk:mockk:1.10.6"
+mockkandroid = "io.mockk:mockk-android:1.10.6"
 

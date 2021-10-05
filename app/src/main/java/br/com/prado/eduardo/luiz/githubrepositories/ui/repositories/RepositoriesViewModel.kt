@@ -1,24 +1,19 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
 import br.com.prado.eduardo.luiz.githubrepositories.dispachers.DispatchersProvider
-import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.GetRepositoriesUseCase
+import br.com.prado.eduardo.luiz.githubrepositories.mappers.RepositoriesMapper
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.StateViewModelImpl
 import br.com.prado.eduardo.luiz.githubrepositories.navigation.Navigator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class RepositoriesViewModel @Inject constructor(
   private val getRepositoriesUseCase: GetRepositoriesUseCase,
   private val navigator: Navigator,
+  private val mapper: RepositoriesMapper,
   dispatchersProvider: DispatchersProvider,
   @RepositoriesStateQualifier initialState: RepositoriesState
 ) : StateViewModelImpl<RepositoriesState, RepositoriesIntention>(
@@ -35,10 +30,8 @@ class RepositoriesViewModel @Inject constructor(
 
   private suspend fun search(language: String) {
     getRepositoriesUseCase(GetRepositoriesUseCase.Params(language))
-      .cachedIn(viewModelScope)
-      .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
       .collectLatest { pagingDataModel ->
-        val pagingData = pagingDataModel.map(::mapToState)
+        val pagingData = mapper.mapToState(pagingDataModel)
         updateState {
           copy(
             isLoading = false,
@@ -46,21 +39,6 @@ class RepositoriesViewModel @Inject constructor(
           )
         }
       }
-  }
-
-  private fun mapToState(repository: RepositoryModel): RepositoriesState.Item {
-    return RepositoriesState.Item(
-      id = repository.id,
-      name = repository.name,
-      fullName = repository.fullName,
-      isPrivate = repository.isPrivate,
-      ownerName = repository.owner.name,
-      ownerImageUrl = repository.owner.avatarUrl,
-      description = repository.description,
-      url = repository.url,
-      forks = repository.forks,
-      stars = repository.stars
-    )
   }
 
 }
