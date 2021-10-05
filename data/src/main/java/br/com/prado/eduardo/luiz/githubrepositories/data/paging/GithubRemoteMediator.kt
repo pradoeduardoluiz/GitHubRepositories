@@ -8,24 +8,27 @@ import androidx.room.withTransaction
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.Database
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.dbo.RemoteKeysDBO
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.dbo.RepositoryDBO
+import br.com.prado.eduardo.luiz.githubrepositories.data.source.preferences.AppPreferences
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.dto.RepositoryDTO
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class GithubRemoteMediator(
   private val language: String,
   private val gitHubService: GitHubService,
   private val database: Database,
+  private val appPreferences: AppPreferences
 ) : RemoteMediator<Int, RepositoryDBO>() {
 
   override suspend fun initialize(): InitializeAction {
-    // Launch remote refresh as soon as paging starts and do not trigger remote prepend or
-    // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
-    // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
-    // triggering remote refresh.
-    return InitializeAction.LAUNCH_INITIAL_REFRESH
+    return if (isCacheExpired()) {
+      InitializeAction.SKIP_INITIAL_REFRESH
+    } else {
+      InitializeAction.LAUNCH_INITIAL_REFRESH
+    }
   }
 
   override suspend fun load(
@@ -61,16 +64,16 @@ class GithubRemoteMediator(
       val endOfPaginationReached = repos.isEmpty()
 
       database.withTransaction {
-        // clear all tables in the database
         if (loadType == LoadType.REFRESH) {
+          appPreferences.lastUpdate = getCurrentTime()
           database.remoteKeysDao().deleteAll()
           database.repositoryDao().deleteAll()
         }
+
         val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
         val nextKey = if (endOfPaginationReached) null else page + 1
-        val keys = repos.map {
-          RemoteKeysDBO(repoId = it.id, prevKey = prevKey, nextKey = nextKey)
-        }
+        val keys = repos.map { RemoteKeysDBO(repoId = it.id, prevKey = prevKey, nextKey = nextKey) }
+
         database.remoteKeysDao().insert(keys)
         database.repositoryDao().insert(repos)
       }
@@ -83,17 +86,15 @@ class GithubRemoteMediator(
   }
 
   private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, RepositoryDBO>): RemoteKeysDBO? {
-    return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
-      ?.let { repo ->
-        database.remoteKeysDao().getById(repo.id)
-      }
+    return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { repo ->
+      database.remoteKeysDao().getById(repo.id)
+    }
   }
 
   private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, RepositoryDBO>): RemoteKeysDBO? {
-    return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
-      ?.let { repo ->
-        database.remoteKeysDao().getById(repo.id)
-      }
+    return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { repo ->
+      database.remoteKeysDao().getById(repo.id)
+    }
   }
 
   private suspend fun getRemoteKeyClosestToCurrentPosition(
@@ -120,9 +121,18 @@ class GithubRemoteMediator(
     language = repository.language
   )
 
+  private fun isCacheExpired(): Boolean {
+    val cacheTimeout = TimeUnit.HOURS.toMillis(REMOTE_CACHE_TIMEOUT)
+    return appPreferences.lastUpdate > 0 &&
+      getCurrentTime() - appPreferences.lastUpdate <= cacheTimeout
+  }
+
+  private fun getCurrentTime() = System.currentTimeMillis()
+
   private companion object {
     const val STARTING_PAGE_INDEX = 1
     const val LANGUAGE_FILTER = "language:"
+    const val REMOTE_CACHE_TIMEOUT = 1L
   }
 
 }

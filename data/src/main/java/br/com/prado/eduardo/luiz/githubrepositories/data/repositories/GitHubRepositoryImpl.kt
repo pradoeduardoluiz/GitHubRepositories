@@ -8,6 +8,7 @@ import androidx.paging.map
 import br.com.prado.eduardo.luiz.githubrepositories.data.paging.GithubRemoteMediator
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.Database
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.dbo.RepositoryDBO
+import br.com.prado.eduardo.luiz.githubrepositories.data.source.preferences.AppPreferences
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.OwnerModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
@@ -18,7 +19,8 @@ import kotlinx.coroutines.flow.map
 @OptIn(ExperimentalPagingApi::class)
 class GitHubRepositoryImpl(
   private val gitHubService: GitHubService,
-  private val database: Database
+  private val database: Database,
+  private val appPreferences: AppPreferences
 ) : GitHubRepository {
 
   override suspend fun getRepositories(
@@ -32,7 +34,8 @@ class GitHubRepositoryImpl(
       remoteMediator = GithubRemoteMediator(
         language,
         gitHubService,
-        database
+        database,
+        appPreferences
       ),
       pagingSourceFactory = { database.repositoryDao().getRepositories(language) }
     ).flow.map { pagingData ->

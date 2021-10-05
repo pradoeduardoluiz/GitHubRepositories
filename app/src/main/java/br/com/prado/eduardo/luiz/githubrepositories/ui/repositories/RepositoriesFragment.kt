@@ -31,7 +31,7 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
     setupRecyclerView()
     bindInputs()
     bindOutputs()
-    viewModel.publish(RepositoriesIntention.Search(language = args.language))
+    viewModel.publish(RepositoriesIntention.Initialized(language = args.language))
   }
 
   private fun bindInputs() = with(binding) {

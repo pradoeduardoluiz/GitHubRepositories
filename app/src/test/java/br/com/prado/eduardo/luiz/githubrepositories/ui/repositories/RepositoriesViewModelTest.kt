@@ -1,6 +1,8 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import br.com.prado.eduardo.luiz.githubrepositories.ViewModelTest
 import br.com.prado.eduardo.luiz.githubrepositories.dispachers.DispatchersProvider
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.OwnerModel
@@ -75,15 +77,18 @@ class RepositoriesViewModelTest : ViewModelTest() {
     val pagingDataModel = PagingData.from(listOf(model))
     val pagingDataModelFlow = flowOf(pagingDataModel)
 
+    val viewModelScope = (viewModel as RepositoriesViewModel).viewModelScope
+
     coEvery {
       getRepositoriesUseCase(GetRepositoriesUseCase.Params(language = language))
+        .cachedIn(viewModelScope)
     } returns pagingDataModelFlow
 
     coEvery {
       mapper.mapToState(pagingDataModel)
     } returns pagingDataExpected
 
-    viewModel.publish(RepositoriesIntention.Search(language = language))
+    viewModel.publish(RepositoriesIntention.Initialized(language = language))
 
     coVerify(exactly = 1) {
       getRepositoriesUseCase(GetRepositoriesUseCase.Params(language = language))

@@ -1,5 +1,7 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import br.com.prado.eduardo.luiz.githubrepositories.dispachers.DispatchersProvider
 import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.GetRepositoriesUseCase
 import br.com.prado.eduardo.luiz.githubrepositories.mappers.RepositoriesMapper
@@ -21,15 +23,25 @@ class RepositoriesViewModel @Inject constructor(
   initialState = initialState
 ), RepositoriesContract.ViewModel {
 
+  private var isInitialized: Boolean = false
+
   override suspend fun handleIntentions(intention: RepositoriesIntention) {
     when (intention) {
-      is RepositoriesIntention.Search -> search(intention.language)
+      is RepositoriesIntention.Initialized -> initialized(intention.language)
       is RepositoriesIntention.Pop -> navigator.pop()
+    }
+  }
+
+  private suspend fun initialized(language: String) {
+    if (!isInitialized) {
+      isInitialized = true
+      search(language)
     }
   }
 
   private suspend fun search(language: String) {
     getRepositoriesUseCase(GetRepositoriesUseCase.Params(language))
+      .cachedIn(viewModelScope)
       .collectLatest { pagingDataModel ->
         val pagingData = mapper.mapToState(pagingDataModel)
         updateState {

@@ -2,6 +2,7 @@ package br.com.prado.eduardo.luiz.githubrepositories.data.di
 
 import br.com.prado.eduardo.luiz.githubrepositories.data.repositories.GitHubRepositoryImpl
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.Database
+import br.com.prado.eduardo.luiz.githubrepositories.data.source.preferences.AppPreferences
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService
 import br.com.prado.eduardo.luiz.githubrepositories.domain.repository.GitHubRepository
 import dagger.Module
@@ -16,7 +17,11 @@ object DataModule {
 
   @Provides
   @Singleton
-  fun provideGitHubRepository(gitHubService: GitHubService, database: Database): GitHubRepository =
-    GitHubRepositoryImpl(gitHubService, database)
+  fun provideGitHubRepository(
+    gitHubService: GitHubService,
+    database: Database,
+    appPreferences: AppPreferences
+  ): GitHubRepository =
+    GitHubRepositoryImpl(gitHubService, database, appPreferences)
 
 }
