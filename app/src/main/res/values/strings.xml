@@ -8,6 +8,7 @@
   <string name="action_search">Search</string>
   <string name="title_repositories">GitHub Repositories</string>
   <string name="action_retry">Retry</string>
+  <string name="label_kotlin">Kotlin</string>
 
   <string name="error_unable_to_load_data">Error: Unable to load data!</string>
   <string name="hint_language_search">Type a programming language</string>

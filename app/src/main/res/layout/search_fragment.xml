@@ -17,21 +17,28 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <com.google.android.material.textfield.TextInputEditText
-    android:id="@+id/language"
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/textInputLayoutLanguage"
     android:layout_width="@dimen/none"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spacing_middle"
+    android:layout_marginStart="@dimen/spacing_huge"
     android:layout_marginTop="@dimen/spacing_middle"
-    android:layout_marginEnd="@dimen/spacing_large"
+    android:layout_marginEnd="@dimen/spacing_huge"
     android:hint="@string/hint_language_search"
-    android:imeOptions="actionSearch"
-    android:inputType="text"
-    android:paddingStart="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_normal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/logo" />
+    app:layout_constraintTop_toBottomOf="@id/logo">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/language"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:imeOptions="actionSearch"
+      android:inputType="text"
+      android:text="@string/label_kotlin" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/search"
@@ -40,7 +47,7 @@
     android:layout_marginStart="@dimen/spacing_huge"
     android:layout_marginTop="@dimen/spacing_middle"
     android:layout_marginEnd="@dimen/spacing_huge"
-    android:enabled="false"
+    android:enabled="true"
     android:text="@string/action_search"
     android:textColor="@color/white"
     app:icon="@drawable/ic_search"
@@ -48,6 +55,6 @@
     app:iconTint="@color/white"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/language" />
+    app:layout_constraintTop_toBottomOf="@id/textInputLayoutLanguage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import br.com.prado.eduardo.luiz.githubrepositories.R
 import br.com.prado.eduardo.luiz.githubrepositories.databinding.SearchFragmentBinding
+import br.com.prado.eduardo.luiz.githubrepositories.extensions.setEditorSearchActionListener
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.viewBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.watch
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,9 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
     language.doOnTextChanged { language, _, _, _ ->
       viewModel.publish(SearchIntention.OnLanguageChanged(language = language.toString()))
     }
-
+    language.setEditorSearchActionListener {
+      viewModel.publish(SearchIntention.Search(language = language.text.toString()))
+    }
     search.setOnClickListener {
       viewModel.publish(SearchIntention.Search(language = language.text.toString()))
     }
