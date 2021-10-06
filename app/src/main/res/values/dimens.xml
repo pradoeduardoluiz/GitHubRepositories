@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- Spacing constants (for margins and paddings) -->
+  <dimen name="none">0dp</dimen>
+
+  <dimen name="font_large">20sp</dimen>
+  <dimen name="font_medium">18sp</dimen>
+  <dimen name="font_normal">16sp</dimen>
+  <dimen name="font_small">14sp</dimen>
+  <dimen name="font_tiny">12sp</dimen>
+  <dimen name="font_very_tiny">10sp</dimen>
+
+  <dimen name="spacing_extra_huge">48dp</dimen>
+  <dimen name="spacing_huge">24dp</dimen>
+  <dimen name="spacing_large">20dp</dimen>
+  <dimen name="spacing_middle">16dp</dimen>
+  <dimen name="spacing_normal">12dp</dimen>
+  <dimen name="spacing_small">8dp</dimen>
+  <dimen name="spacing_compact">6dp</dimen>
+  <dimen name="spacing_micro">4dp</dimen>
+  <dimen name="spacing_tiny">1dp</dimen>
+
+  <dimen name="corner_radius_large">20dp</dimen>
+  <dimen name="elevation_normal">10dp</dimen>
+
+  <dimen name="image_size">75dp</dimen>
+
+</resources>

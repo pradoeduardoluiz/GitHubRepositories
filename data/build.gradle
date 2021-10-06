@@ -1,0 +1,48 @@
+plugins {
+  id 'com.android.library'
+  id 'kotlin-android'
+  id 'kotlin-kapt'
+}
+
+android {
+  defaultConfig {
+  }
+}
+
+dependencies {
+
+  implementation project(":domain")
+
+  implementation libs.androidx.core
+  api libs.androidx.room.library
+  implementation libs.androidx.room.ktx
+  kapt libs.androidx.room.kapt
+
+  implementation libs.coroutines.library
+  implementation libs.okhttp.logginginterceptor
+  implementation libs.retrofit.library
+  implementation libs.androidx.paging.library
+  testImplementation libs.androidx.paging.test
+
+  api libs.moshi.library
+  api libs.moshi.adapter
+  api libs.retrofit.moshiconverter
+
+  kapt libs.moshi.codegen
+
+  implementation libs.dagger.hilt.core
+  kapt libs.dagger.hilt.compiler
+
+  testImplementation libs.dagger.hilt.test
+  kaptTest libs.dagger.hilt.compiler
+
+  testImplementation libs.androidx.coretesting
+  testImplementation libs.junit.library
+  testImplementation libs.mockk
+  testImplementation libs.mockito
+
+
+  androidTestImplementation libs.mockkandroid
+  androidTestImplementation libs.junit.ext
+  androidTestImplementation libs.mockitoandroid
+}

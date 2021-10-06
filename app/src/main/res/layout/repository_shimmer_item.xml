@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_margin="@dimen/spacing_middle"
+  android:backgroundTint="@color/secondaryColor"
+  android:elevation="@dimen/spacing_middle"
+  app:cardCornerRadius="@dimen/corner_radius_large">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+      android:id="@+id/view1"
+      android:layout_width="@dimen/image_size"
+      android:layout_height="@dimen/image_size"
+      android:layout_marginStart="@dimen/spacing_middle"
+      android:layout_marginTop="@dimen/spacing_huge"
+      android:layout_marginEnd="@dimen/spacing_middle"
+      android:layout_marginBottom="@dimen/spacing_huge"
+      android:background="@color/secondaryDarkColor"
+      app:layout_constraintBottom_toTopOf="@+id/goToRepository"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:src="@tools:sample/avatars" />
+
+    <TextView
+      android:id="@id/name"
+      style="@style/GitHubRepositories.Text.Body1"
+      android:layout_width="@dimen/none"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing_middle"
+      android:layout_marginEnd="@dimen/spacing_middle"
+      android:background="@color/secondaryDarkColor"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/view1"
+      app:layout_constraintTop_toTopOf="@id/view1" />
+
+    <TextView
+      android:id="@id/author"
+      style="@style/GitHubRepositories.Text.Body2"
+      android:layout_width="@dimen/none"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing_middle"
+      android:layout_marginTop="@dimen/spacing_compact"
+      android:layout_marginEnd="@dimen/spacing_middle"
+      android:background="@color/secondaryDarkColor"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/view1"
+      app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+      android:id="@+id/stars"
+      style="@style/GitHubRepositories.Text.Body2"
+      android:layout_width="@dimen/spacing_extra_huge"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing_middle"
+      android:layout_marginTop="@dimen/spacing_compact"
+      android:layout_marginBottom="@dimen/spacing_large"
+      android:background="@color/secondaryDarkColor"
+      android:drawablePadding="@dimen/spacing_compact"
+      android:gravity="center"
+      app:drawableTint="@color/primaryColor"
+      app:layout_constraintStart_toEndOf="@id/view1"
+      app:layout_constraintTop_toBottomOf="@+id/author" />
+
+    <TextView
+      android:id="@+id/forks"
+      style="@style/GitHubRepositories.Text.Body2"
+      android:layout_width="@dimen/spacing_extra_huge"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing_middle"
+      android:layout_marginTop="@dimen/spacing_compact"
+      android:layout_marginBottom="@dimen/spacing_large"
+      android:background="@color/secondaryDarkColor"
+      android:drawablePadding="@dimen/spacing_compact"
+      app:drawableTint="@color/primaryColor"
+      app:layout_constraintBottom_toTopOf="@+id/goToRepository"
+      app:layout_constraintStart_toEndOf="@id/view1"
+      app:layout_constraintTop_toBottomOf="@+id/stars" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/goToRepository"
+      android:layout_width="@dimen/none"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing_middle"
+      android:layout_marginEnd="@dimen/spacing_middle"
+      android:layout_marginBottom="@dimen/spacing_middle"
+      android:backgroundTint="@color/secondaryDarkColor"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

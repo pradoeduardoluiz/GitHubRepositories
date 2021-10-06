@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/white"
+  tools:context=".ui.search.SearchFragment">
+
+  <ImageView
+    android:id="@+id/logo"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_marginTop="@dimen/spacing_extra_huge"
+    android:src="@drawable/ic_github_logo"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/textInputLayoutLanguage"
+    android:layout_width="@dimen/none"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_huge"
+    android:layout_marginTop="@dimen/spacing_middle"
+    android:layout_marginEnd="@dimen/spacing_huge"
+    android:hint="@string/hint_language_search"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/logo">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/language"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:imeOptions="actionSearch"
+      android:inputType="text"
+      android:text="@string/label_kotlin" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/search"
+    android:layout_width="@dimen/none"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_huge"
+    android:layout_marginTop="@dimen/spacing_middle"
+    android:layout_marginEnd="@dimen/spacing_huge"
+    android:enabled="true"
+    android:text="@string/action_search"
+    android:textColor="@color/white"
+    app:icon="@drawable/ic_search"
+    app:iconGravity="textEnd"
+    app:iconTint="@color/white"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/textInputLayoutLanguage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

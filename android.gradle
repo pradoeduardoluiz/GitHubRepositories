@@ -1,0 +1,54 @@
+subprojects {
+  afterEvaluate { project ->
+    if (project.hasProperty('android')) {
+
+      android {
+        buildToolsVersion "30.0.3"
+        compileSdkVersion 30
+
+        defaultConfig {
+          minSdk 23
+          targetSdk 30
+          versionCode 1
+          versionName "1.0"
+
+          testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
+
+        buildTypes {
+          release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testCoverageEnabled = false
+          }
+          debug {
+            testCoverageEnabled = true
+          }
+        }
+
+        compileOptions {
+          coreLibraryDesugaringEnabled true
+          sourceCompatibility JavaVersion.VERSION_1_8
+          targetCompatibility JavaVersion.VERSION_1_8
+        }
+        kotlinOptions {
+          jvmTarget = '1.8'
+          freeCompilerArgs += [
+              "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+              "-Xuse-experimental=kotlinx.coroutines.InternalCoroutinesApi",
+              "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi"
+          ]
+        }
+
+        testOptions {
+          unitTests.returnDefaultValues = true
+        }
+
+        dependencies {
+          implementation libs.kotlin.stdlib
+          coreLibraryDesugaring libs.coredesugaring
+        }
+      }
+    }
+  }
+}

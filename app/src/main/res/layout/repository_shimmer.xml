@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <include
+    layout="@layout/repository_shimmer_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_middle"
+    android:layout_marginEnd="@dimen/spacing_middle" />
+
+  <include
+    layout="@layout/repository_shimmer_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_middle"
+    android:layout_marginEnd="@dimen/spacing_middle" />
+
+  <include
+    layout="@layout/repository_shimmer_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_middle"
+    android:layout_marginEnd="@dimen/spacing_middle" />
+
+  <include
+    layout="@layout/repository_shimmer_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_middle" />
+
+  <include
+    layout="@layout/repository_shimmer_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_middle"
+    android:layout_marginEnd="@dimen/spacing_middle" />
+
+  <include
+    layout="@layout/repository_shimmer_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_middle"
+    android:layout_marginEnd="@dimen/spacing_middle" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
