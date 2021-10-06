@@ -12,6 +12,8 @@ import coil.load
 class RepositoriesAdapter :
   PagingDataAdapter<RepositoriesState.Item, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
+  lateinit var onViewRepositoryClick: (url: String) -> Unit
+
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val binding = RepositoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return RepositoryViewHolder(binding)
@@ -35,6 +37,7 @@ class RepositoriesAdapter :
         author.text = item.ownerName
         stars.text = root.context.getString(R.string.label_stars, item.stars.toString())
         forks.text = root.context.getString(R.string.label_forks, item.forks.toString())
+        goToRepository.setOnClickListener { onViewRepositoryClick(item.url) }
       }
     }
   }

@@ -12,5 +12,6 @@
 
   <string name="error_unable_to_load_data">Error: Unable to load data!</string>
   <string name="hint_language_search">Type a programming language</string>
+  <string name="no_app_to_open_url">There is no browser installed on your device to open the link</string>
 
 </resources>

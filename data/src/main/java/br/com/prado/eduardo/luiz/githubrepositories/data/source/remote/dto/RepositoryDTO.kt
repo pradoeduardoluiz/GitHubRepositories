@@ -11,7 +11,7 @@ data class RepositoryDTO(
   @Json(name = "private") val isPrivate: Boolean,
   @Json(name = "owner") val owner: OwnerDTO,
   @Json(name = "description") val description: String?,
-  @Json(name = "url") val url: String,
+  @Json(name = "html_url") val url: String,
   @Json(name = "forks") val forks: Long,
   @Json(name = "stargazers_count") val stars: Long,
   @Json(name = "language") val language: String,

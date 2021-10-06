@@ -11,6 +11,7 @@ import androidx.paging.LoadState
 import br.com.prado.eduardo.luiz.githubrepositories.R
 import br.com.prado.eduardo.luiz.githubrepositories.databinding.RepositoriesFragmentBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.isShimmering
+import br.com.prado.eduardo.luiz.githubrepositories.extensions.openExternalBrowser
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.viewBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.watch
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,6 +58,7 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
       binding.error.root.isVisible = loadState.isError()
       binding.shimmer.isShimmering = loadState.isLoading()
     }
+    adapter.onViewRepositoryClick = { url -> openExternalBrowser(url) }
   }
 
   private fun CombinedLoadStates.isLoading() =
