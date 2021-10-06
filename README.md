@@ -1,5 +1,9 @@
 # GitHub Repositories
 
+## Introduction
+
+Simple app to show GitHub repositories by language, repos from GitHub public api.
+
 ## Requirements
 
 To build this project you will need:
