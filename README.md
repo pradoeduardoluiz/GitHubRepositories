@@ -38,6 +38,12 @@ Used for asynchronous and non-blocking code.
 
 ### [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 
+We use Dagger hilt as Dependency Injection Framework.
+
+### [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview?hl=pt-br)
+
+It helps to create pagination and local cache control.
+
 ### [Navigation](https://developer.android.com/guide/navigation)
 
 It helps to create navigation between `Fragments`, `Dialogs`, etc.

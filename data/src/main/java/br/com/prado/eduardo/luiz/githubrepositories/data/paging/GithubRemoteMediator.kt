@@ -36,52 +36,53 @@ class GithubRemoteMediator(
     state: PagingState<Int, RepositoryDBO>
   ): MediatorResult {
 
-    val page = when (loadType) {
-      LoadType.REFRESH -> {
-        val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-        remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE_INDEX
-      }
-      LoadType.PREPEND -> {
-        val remoteKeys = getRemoteKeyForFirstItem(state)
-        val prevKey = remoteKeys?.prevKey
-          ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-        prevKey
-      }
-      LoadType.APPEND -> {
-        val remoteKeys = getRemoteKeyForLastItem(state)
-        val nextKey = remoteKeys?.nextKey
-          ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-        nextKey
-      }
+    val page = when (val pageKeyData = getKeyPageData(loadType, state)) {
+      is MediatorResult.Success -> return pageKeyData
+      is Int -> pageKeyData
+      else -> STARTING_PAGE_INDEX
     }
 
     val query = LANGUAGE_FILTER + language
 
-    try {
+    return try {
       val apiResponse = gitHubService.getRepositories(query, page, state.config.pageSize)
 
       val repos = apiResponse.repositories.map(::mapToDbo)
       val endOfPaginationReached = repos.isEmpty()
 
-      database.withTransaction {
-        if (loadType == LoadType.REFRESH) {
-          appPreferences.lastUpdate = getCurrentTime()
-          database.remoteKeysDao().deleteAll()
-          database.repositoryDao().deleteAll()
-        }
-
-        val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
-        val nextKey = if (endOfPaginationReached) null else page + 1
-        val keys = repos.map { RemoteKeysDBO(repoId = it.id, prevKey = prevKey, nextKey = nextKey) }
-
-        database.remoteKeysDao().insert(keys)
-        database.repositoryDao().insert(repos)
-      }
-      return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+      updateDataBase(loadType, page, endOfPaginationReached, repos)
+      MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
     } catch (exception: IOException) {
-      return MediatorResult.Error(exception)
+      MediatorResult.Error(exception)
     } catch (exception: HttpException) {
-      return MediatorResult.Error(exception)
+      MediatorResult.Error(exception)
+    }
+  }
+
+  private suspend fun updateDataBase(
+    loadType: LoadType,
+    page: Int,
+    endOfPaginationReached: Boolean,
+    repositories: List<RepositoryDBO>
+  ) {
+    database.withTransaction {
+      if (loadType == LoadType.REFRESH) {
+        appPreferences.lastUpdate = getCurrentTime()
+        database.remoteKeysDao().deleteAll()
+        database.repositoryDao().deleteAll()
+      }
+
+      val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
+      val nextKey = if (endOfPaginationReached) null else page + 1
+      val keys = repositories.map {
+        RemoteKeysDBO(
+          repoId = it.id,
+          prevKey = prevKey,
+          nextKey = nextKey
+        )
+      }
+      database.remoteKeysDao().insert(keys)
+      database.repositoryDao().insert(repositories)
     }
   }
 
@@ -103,6 +104,32 @@ class GithubRemoteMediator(
     return state.anchorPosition?.let { position ->
       state.closestItemToPosition(position)?.id?.let { repoId ->
         database.remoteKeysDao().getById(repoId)
+      }
+    }
+  }
+
+  private suspend fun getKeyPageData(
+    loadType: LoadType,
+    state: PagingState<Int, RepositoryDBO>
+  ): Any {
+    return when (loadType) {
+      LoadType.REFRESH -> {
+        val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+        remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE_INDEX
+      }
+      LoadType.PREPEND -> {
+        val remoteKeys = getRemoteKeyForFirstItem(state)
+        val prevKey = remoteKeys?.prevKey ?: MediatorResult.Success(
+          endOfPaginationReached = remoteKeys != null
+        )
+        prevKey
+      }
+      LoadType.APPEND -> {
+        val remoteKeys = getRemoteKeyForLastItem(state)
+        val nextKey = remoteKeys?.nextKey ?: MediatorResult.Success(
+          endOfPaginationReached = remoteKeys != null
+        )
+        nextKey
       }
     }
   }

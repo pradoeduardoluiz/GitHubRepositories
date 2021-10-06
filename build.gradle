@@ -16,10 +16,12 @@ buildscript {
 }
 
 plugins {
+  id "io.gitlab.arturbosch.detekt" version "1.18.1"
   id "com.github.ben-manes.versions" version "0.39.0"
 }
 
 apply from: "android.gradle"
+apply from: "detekt.gradle"
 
 task clean(type: Delete) {
   delete rootProject.buildDir

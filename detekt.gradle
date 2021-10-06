@@ -1,0 +1,19 @@
+subprojects {
+  apply(plugin: "io.gitlab.arturbosch.detekt")
+
+  detekt {
+    buildUponDefaultConfig = true
+    failFast = false
+
+    config = files("$rootDir/detekt.yml")
+
+    reports {
+      html {
+        enabled = true
+        destination = file("build/reports/detekt/detekt.html")
+      }
+      xml.enabled = false
+      txt.enabled = false
+    }
+  }
+}
