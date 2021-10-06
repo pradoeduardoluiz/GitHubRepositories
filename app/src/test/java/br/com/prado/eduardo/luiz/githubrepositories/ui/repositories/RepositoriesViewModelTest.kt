@@ -1,14 +1,12 @@
 package br.com.prado.eduardo.luiz.githubrepositories.ui.repositories
 
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import br.com.prado.eduardo.luiz.githubrepositories.ViewModelTest
+import br.com.prado.eduardo.luiz.githubrepositories.collectDataForTest
 import br.com.prado.eduardo.luiz.githubrepositories.dispachers.DispatchersProvider
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.OwnerModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.model.RepositoryModel
 import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.GetRepositoriesUseCase
-import br.com.prado.eduardo.luiz.githubrepositories.mappers.RepositoriesMapper
 import br.com.prado.eduardo.luiz.githubrepositories.navigation.Navigator
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,7 +20,6 @@ import org.junit.Test
 
 class RepositoriesViewModelTest : ViewModelTest() {
 
-  private val mapper = mockk<RepositoriesMapper>()
   private val getRepositoriesUseCase = mockk<GetRepositoriesUseCase>()
   private val navigator = mockk<Navigator>()
   private lateinit var viewModel: RepositoriesContract.ViewModel
@@ -31,7 +28,6 @@ class RepositoriesViewModelTest : ViewModelTest() {
     viewModel = RepositoriesViewModel(
       getRepositoriesUseCase = getRepositoriesUseCase,
       navigator = navigator,
-      mapper = mapper,
       dispatchersProvider = dispatchersProvider,
       initialState = RepositoriesState()
     )
@@ -57,8 +53,6 @@ class RepositoriesViewModelTest : ViewModelTest() {
       )
     )
 
-    val pagingDataExpected = PagingData.from(expected)
-
     val model = RepositoryModel(
       id = 1,
       name = "name",
@@ -77,22 +71,16 @@ class RepositoriesViewModelTest : ViewModelTest() {
     val pagingDataModel = PagingData.from(listOf(model))
     val pagingDataModelFlow = flowOf(pagingDataModel)
 
-    val viewModelScope = (viewModel as RepositoriesViewModel).viewModelScope
-
     coEvery {
       getRepositoriesUseCase(GetRepositoriesUseCase.Params(language = language))
-        .cachedIn(viewModelScope)
     } returns pagingDataModelFlow
 
-    coEvery {
-      mapper.mapToState(pagingDataModel)
-    } returns pagingDataExpected
-
     viewModel.publish(RepositoriesIntention.Initialized(language = language))
+    val actual = viewModel.state.value.pagingData.collectDataForTest()
+    Assert.assertEquals(expected, actual)
 
     coVerify(exactly = 1) {
       getRepositoriesUseCase(GetRepositoriesUseCase.Params(language = language))
-      mapper.mapToState(pagingDataModel)
     }
 
     confirmVerified(navigator, getRepositoriesUseCase)

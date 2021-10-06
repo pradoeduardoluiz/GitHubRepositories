@@ -10,7 +10,7 @@ class AuthorizationInterceptor : Interceptor {
     val original: Request = chain.request()
 
     val newRequest = original.newBuilder()
-      .header("Authorization", "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")
+      .header("Authorization", "token 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")
       .build()
 
     return chain.proceed(newRequest)

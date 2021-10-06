@@ -11,6 +11,9 @@ abstract class RepositoryDAO : BaseDAO<RepositoryDBO>() {
   @Query(value = "SELECT * FROM repository WHERE language LIKE :language ORDER BY stars DESC, name ASC")
   abstract fun getRepositories(language: String): PagingSource<Int, RepositoryDBO>
 
+  @Query(value = "SELECT COUNT(id) FROM repository WHERE language LIKE :language ORDER BY stars DESC, name ASC")
+  abstract fun getRowCount(language: String): Int
+
   @Query("DELETE FROM repository")
   abstract fun deleteAll()
 }

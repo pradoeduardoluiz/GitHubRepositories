@@ -3,12 +3,13 @@
 
   <string name="label_stars">stars: %s</string>
   <string name="label_forks">forks: %s</string>
-  <string name="label_no_result">No repository found</string>
+  <string name="label_no_result">No repositories found</string>
   <string name="action_go_to_repository">View Repository</string>
   <string name="action_search">Search</string>
   <string name="title_repositories">GitHub Repositories</string>
   <string name="action_retry">Retry</string>
   <string name="label_kotlin">Kotlin</string>
+  <string name="label_no_connection">No Internet connection !!!</string>
 
   <string name="error_unable_to_load_data">Error: Unable to load data!</string>
   <string name="hint_language_search">Type a programming language</string>

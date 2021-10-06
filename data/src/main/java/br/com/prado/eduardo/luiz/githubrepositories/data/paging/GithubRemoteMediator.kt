@@ -11,8 +11,6 @@ import br.com.prado.eduardo.luiz.githubrepositories.data.source.cache.dbo.Reposi
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.preferences.AppPreferences
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.dto.RepositoryDTO
 import br.com.prado.eduardo.luiz.githubrepositories.data.source.remote.service.GitHubService
-import retrofit2.HttpException
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
@@ -25,9 +23,9 @@ class GithubRemoteMediator(
 
   override suspend fun initialize(): InitializeAction {
     return if (isCacheExpired()) {
-      InitializeAction.SKIP_INITIAL_REFRESH
-    } else {
       InitializeAction.LAUNCH_INITIAL_REFRESH
+    } else {
+      InitializeAction.SKIP_INITIAL_REFRESH
     }
   }
 
@@ -52,9 +50,7 @@ class GithubRemoteMediator(
 
       updateDataBase(loadType, page, endOfPaginationReached, repos)
       MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
-    } catch (exception: IOException) {
-      MediatorResult.Error(exception)
-    } catch (exception: HttpException) {
+    } catch (exception: Exception) {
       MediatorResult.Error(exception)
     }
   }
@@ -148,10 +144,15 @@ class GithubRemoteMediator(
     language = repository.language
   )
 
-  private fun isCacheExpired(): Boolean {
+  private suspend fun isCacheExpired(): Boolean {
+    val hasRegister = database.withTransaction {
+      database.repositoryDao().getRowCount(language) > 0
+    }
     val cacheTimeout = TimeUnit.HOURS.toMillis(REMOTE_CACHE_TIMEOUT)
-    return appPreferences.lastUpdate > 0 &&
-      getCurrentTime() - appPreferences.lastUpdate <= cacheTimeout
+
+    return (appPreferences.lastUpdate > 0 &&
+      getCurrentTime() - appPreferences.lastUpdate >= cacheTimeout) ||
+      !hasRegister
   }
 
   private fun getCurrentTime() = System.currentTimeMillis()

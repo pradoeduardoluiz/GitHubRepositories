@@ -6,18 +6,30 @@
   android:layout_height="match_parent"
   tools:context=".ui.MainActivity">
 
+  <com.google.android.material.textview.MaterialTextView
+    android:id="@+id/noConnection"
+    android:layout_width="@dimen/none"
+    android:layout_height="@dimen/spacing_huge"
+    android:background="@color/red"
+    android:fontFamily="sans-serif-black"
+    android:gravity="center"
+    android:text="@string/label_no_connection"
+    android:textAlignment="center"
+    android:textColor="@color/white"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
   <fragment
     android:id="@+id/navHostFragment"
     android:name="androidx.navigation.fragment.NavHostFragment"
     android:layout_width="@dimen/none"
     android:layout_height="@dimen/none"
-    android:visibility="gone"
     app:defaultNavHost="true"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/noConnection"
     app:navGraph="@navigation/navigation_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

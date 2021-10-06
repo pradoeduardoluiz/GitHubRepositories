@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import br.com.prado.eduardo.luiz.githubrepositories.dispachers.DispatchersProvider
 import br.com.prado.eduardo.luiz.githubrepositories.domain.usecases.GetRepositoriesUseCase
-import br.com.prado.eduardo.luiz.githubrepositories.mappers.RepositoriesMapper
+import br.com.prado.eduardo.luiz.githubrepositories.mappers.mapToState
 import br.com.prado.eduardo.luiz.githubrepositories.mvi.StateViewModelImpl
 import br.com.prado.eduardo.luiz.githubrepositories.navigation.Navigator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,6 @@ import javax.inject.Inject
 class RepositoriesViewModel @Inject constructor(
   private val getRepositoriesUseCase: GetRepositoriesUseCase,
   private val navigator: Navigator,
-  private val mapper: RepositoriesMapper,
   dispatchersProvider: DispatchersProvider,
   @RepositoriesStateQualifier initialState: RepositoriesState
 ) : StateViewModelImpl<RepositoriesState, RepositoriesIntention>(
@@ -43,7 +42,7 @@ class RepositoriesViewModel @Inject constructor(
     getRepositoriesUseCase(GetRepositoriesUseCase.Params(language))
       .cachedIn(viewModelScope)
       .collectLatest { pagingDataModel ->
-        val pagingData = mapper.mapToState(pagingDataModel)
+        val pagingData = pagingDataModel.mapToState()
         updateState {
           copy(
             isLoading = false,

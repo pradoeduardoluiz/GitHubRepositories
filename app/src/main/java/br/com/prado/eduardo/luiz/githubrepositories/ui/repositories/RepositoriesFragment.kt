@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -15,6 +16,8 @@ import br.com.prado.eduardo.luiz.githubrepositories.extensions.openExternalBrows
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.viewBinding
 import br.com.prado.eduardo.luiz.githubrepositories.extensions.watch
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,26 +52,31 @@ class RepositoriesFragment : Fragment(R.layout.repositories_fragment) {
   }
 
   private fun setupRecyclerView() = with(binding) {
-    repositories.adapter = adapter.withLoadStateHeaderAndFooter(
-      header = RepositoriesLoadStateAdapter { adapter.retry() },
+    repositories.adapter = adapter.withLoadStateFooter(
       footer = RepositoriesLoadStateAdapter { adapter.retry() }
     )
-    adapter.addLoadStateListener { loadState ->
-      repositories.isVisible = loadState.isNotLoading()
-      binding.error.root.isVisible = loadState.isError()
-      binding.shimmer.isShimmering = loadState.isLoading()
+    lifecycleScope.launch {
+      adapter.loadStateFlow.collect { loadStates ->
+        binding.shimmer.isShimmering = loadStates.isLoading()
+        emptyList.isVisible = loadStates.isEmpty()
+        repositories.isVisible = loadStates.isNotLoading()
+        binding.error.root.isVisible = loadStates.isError()
+      }
     }
     adapter.onViewRepositoryClick = { url -> openExternalBrowser(url) }
   }
 
   private fun CombinedLoadStates.isLoading() =
-    this.source.refresh is LoadState.Loading
+    this.mediator?.refresh is LoadState.Loading && adapter.itemCount == 0
 
   private fun CombinedLoadStates.isNotLoading() =
     this.source.refresh is LoadState.NotLoading ||
       this.mediator?.refresh is LoadState.NotLoading
 
   private fun CombinedLoadStates.isError() =
-    this.source.refresh is LoadState.Error
+    this.mediator?.refresh is LoadState.Error && adapter.itemCount == 0
+
+  private fun CombinedLoadStates.isEmpty() =
+    this.refresh is LoadState.NotLoading && adapter.itemCount == 0
 
 }
