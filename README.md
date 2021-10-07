@@ -14,6 +14,14 @@ To build this project you will need:
 
 This project uses MVI architecture, the main structure can be seen bellow
 
+## Attention
+
+The GitHub API may return that usage limits have been exceeded, to avoid this it is necessary to
+create a personal token and add it to the project
+
+Add the **gitHubToken** property to your *local.properties* file example: gitHubToken="Your personal
+token" and build the project
+
 ```
 .
 └── GitHubRepositories/
